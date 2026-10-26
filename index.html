@@ -3097,7 +3097,7 @@
     <aside class="story-video" id="storyVideoPanel" aria-hidden="true" aria-label="Space story video page">
       <button class="close-story-video" id="closeStoryVideo" aria-label="Close space story">×</button>
       <div class="video-frame" id="storyVideoFrame" aria-label="Video cover placeholder">
-        <video id="storyVideoMedia" controls playsinline preload="metadata"></video>
+        <video id="storyVideoMedia" controls playsinline webkit-playsinline preload="metadata"></video>
         <div class="video-play-mark" aria-hidden="true">▶</div>
       </div>
       <div class="story-video-copy">
@@ -3105,6 +3105,10 @@
         <h3 id="storyVideoTitle">The object-owner story inside the space</h3>
         <p id="storyVideoLead">This layer extends the object detail into a fuller video narrative: when the object appeared, what the owner experienced in the space, and why it was kept.</p>
         <p id="storyVideoBody">The video cover remains a placeholder for now. It can later be replaced with a real cover, an autoplay short film, or chaptered timeline.</p>
+        <p id="storyVideoError" role="status" hidden>
+          The video could not load. <button id="retryStoryVideo" type="button">Try again</button>
+          or <a id="directStoryVideo" target="_blank" rel="noopener">open the video directly</a>.
+        </p>
         <div class="story-video-meta">
           <span id="storyVideoId">ID --</span>
           <span id="storyVideoPlace">SPACE --</span>
@@ -3146,17 +3150,17 @@
 
       const relicVideoStories = {
         "NO.004": {
-          video: "assets/videos/black-id-lanyard-story.mp4",
+          video: "assets/videos/black-id-lanyard-story-h264.mp4",
           lead: "This real video follows the black ID lanyard through the shared office, turning an everyday access object into a record of arrival, movement, and belonging.",
           body: "The lanyard appears again and again across the orbit because routine is repeated too: every scan, every entry, every return to the same desk slowly becomes part of the owner's spatial memory."
         },
         "NO.015": {
-          video: "assets/videos/bottle-memory-story.mp4",
+          video: "assets/videos/bottle-memory-story-h264.mp4",
           lead: "This video turns the pink bottle into a trace of celebration after work: a small object kept because it remembers the moment when pressure briefly became relief.",
           body: "Across the orbit, every repeated bottle opens the same story. It is not only about drinking or decoration, but about how a team marks the end of one chapter before returning to the next day."
         },
         "NO.016": {
-          video: "assets/videos/bottle-memory-story.mp4",
+          video: "assets/videos/bottle-memory-story-h264.mp4",
           lead: "This video follows the amber bottle as a quieter souvenir, one that sits near the edge of the workspace like a sealed memory of late nights and completed decisions.",
           body: "Every repeated amber bottle in the orbit now leads to this same space story, connecting the object to the owner's rhythm of pausing, looking back, and continuing forward."
         }
@@ -3720,6 +3724,8 @@
 
       function openVideoStory() {
         const relic = relics[activeRelicIndex];
+        storyVideoMedia.pause();
+        document.querySelector("#storyVideoError").hidden = true;
         storyVideoMeta.textContent = `${relic.era} · SPACE VIDEO STORY`;
         storyVideoTitle.textContent = `${relic.title} and Its Owner in the Space`;
         storyVideoLead.textContent = relic.videoLead || `This video begins at ${relic.place}, recording how the owner encountered, used, and kept "${relic.title}" inside the shared office.`;
@@ -3728,6 +3734,8 @@
         storyVideoPlace.textContent = relic.place;
         if (relic.video) {
           storyVideoMedia.src = relic.video;
+          document.querySelector("#directStoryVideo").href = relic.video;
+          storyVideoMedia.load();
           storyVideoFrame.classList.add("has-video");
           storyVideoFrame.setAttribute("aria-label", `${relic.title} video story`);
         } else {
@@ -3750,12 +3758,26 @@
       }
 
       function closePanel() {
+        storyVideoMedia.pause();
         storyVideoPanel.classList.remove("is-open");
         storyVideoPanel.setAttribute("aria-hidden", "true");
         detailPanel.classList.remove("is-open");
         detailPanel.setAttribute("aria-hidden", "true");
       }
 
+      storyVideoMedia.addEventListener("error", () => {
+        if (storyVideoMedia.getAttribute("src")) {
+          document.querySelector("#storyVideoError").hidden = false;
+        }
+      });
+      storyVideoMedia.addEventListener("loadeddata", () => {
+        document.querySelector("#storyVideoError").hidden = true;
+      });
+      document.querySelector("#retryStoryVideo").addEventListener("click", () => {
+        document.querySelector("#storyVideoError").hidden = true;
+        storyVideoMedia.load();
+        storyVideoMedia.play().catch(() => {});
+      });
       openStoryVideo.addEventListener("click", openVideoStory);
       closeStoryVideo.addEventListener("click", closeVideoStory);
       storyVideoPanel.addEventListener("click", (event) => {
