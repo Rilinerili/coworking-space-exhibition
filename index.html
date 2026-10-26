@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Souvenir Archive | One Person and One Office</title>
+    <link rel="preload" as="image" href="assets/optimized/camera-space-entry.webp" fetchpriority="high" />
     <style>
       :root {
         --black: #030304;
@@ -124,7 +125,7 @@
         background-image:
           radial-gradient(circle at 66% 61%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.08) 32%, rgba(0, 0, 0, 0.28) 78%),
           linear-gradient(90deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0) 52%, rgba(0, 0, 0, 0.08)),
-          url("assets/camera-space-entry.png");
+          url("assets/optimized/camera-space-entry.webp");
         background-size: cover;
         background-position: center;
         filter: saturate(0.9) brightness(0.78) contrast(1.06) blur(14px);
@@ -2837,15 +2838,15 @@
           </div>
           <div class="life-gallery" aria-label="Space life image placeholders">
             <figure class="life-slot">
-              <img src="assets/office-cover-final.png" alt="Shared office life placeholder" />
+              <img data-src="assets/optimized/camera-space-entry.webp" decoding="async" alt="Inside the shared office" />
               <span>Morning enters the space, and a project slowly unfolds across one desk.</span>
             </figure>
             <figure class="life-slot">
-              <img src="assets/home/focus-booths.jpg" alt="Private meeting booths in a shared office" />
+              <img data-src="assets/optimized/home/focus-booths.webp" decoding="async" alt="Private meeting booths in a shared office" />
               <span>Private booths create a softer boundary for calls, reviews, and small decisions.</span>
             </figure>
             <figure class="life-slot">
-              <img src="assets/home/lounge-workspace.jpg" alt="Open shared office with lounge seating" />
+              <img data-src="assets/optimized/home/lounge-workspace.webp" decoding="async" alt="Open shared office with lounge seating" />
               <span>Open lounges let work and rest overlap, giving the day a more human tempo.</span>
             </figure>
           </div>
@@ -2879,15 +2880,15 @@
           </div>
           <div class="app-showcase" aria-label="App screenshot previews">
             <article class="app-shot-card">
-              <img class="app-screen-image" src="assets/app/personal-state-tracker.png" alt="Personal state tracking app screen" />
+              <img class="app-screen-image" data-src="assets/optimized/app/personal-state-tracker.webp" loading="lazy" decoding="async" alt="Personal state tracking app screen" />
               <small>Personal State Tracking</small>
             </article>
             <article class="app-shot-card">
-              <img class="app-screen-image" src="assets/app/community-emotion-map.png" alt="Community emotion map app screen" />
+              <img class="app-screen-image" data-src="assets/optimized/app/community-emotion-map.webp" loading="lazy" decoding="async" alt="Community emotion map app screen" />
               <small>Community Emotion Map</small>
             </article>
             <article class="app-shot-card">
-              <img class="app-screen-image" src="assets/app/personal-state-line.png" alt="Personal state line chart app screen" />
+              <img class="app-screen-image" data-src="assets/optimized/app/personal-state-line.webp" loading="lazy" decoding="async" alt="Personal state line chart app screen" />
               <small>Daily State Curve</small>
             </article>
           </div>
@@ -2921,7 +2922,7 @@
               </button>
             </div>
             <article class="city-detail" id="cityDetail" aria-live="polite">
-              <img id="cityDetailImage" src="assets/cities/shanghai-office.jpg" alt="Shanghai shared office site" />
+              <img id="cityDetailImage" data-src="assets/optimized/cities/shanghai-office.webp" decoding="async" alt="Shanghai shared office site" />
               <div class="city-detail-copy">
                 <small id="cityDetailMeta">SHANGHAI / 03 SITES</small>
                 <h3 id="cityDetailTitle">Shanghai Jing'an Creative Hub</h3>
@@ -3074,11 +3075,11 @@
       <button class="close-choice-detail" id="closeChoiceDetail" aria-label="Close choice detail">×</button>
       <div class="choice-gallery" id="choiceGallery" aria-label="Detail image area">
         <figure class="choice-visual">
-          <img id="choiceImageMain" src="assets/office-cover-final.png" alt="" />
+          <img id="choiceImageMain" decoding="async" alt="" />
           <span id="choiceImageMainCaption">Main image placeholder</span>
         </figure>
         <figure class="choice-visual">
-          <img id="choiceImageSecond" src="assets/office-cover-final.png" alt="" />
+          <img id="choiceImageSecond" decoding="async" alt="" />
           <span id="choiceImageSecondCaption">Supporting image placeholder</span>
         </figure>
         <figure class="choice-visual is-placeholder">
@@ -3145,7 +3146,7 @@
         place,
         story,
         note,
-        image: `assets/office/${file}`
+        image: `assets/optimized/office/${file.replace(/\.png$/, ".webp")}`
       }));
 
       const relicVideoStories = {
@@ -3229,7 +3230,8 @@
 
       relics.forEach((relic) => {
         const ghost = document.createElement("img");
-        ghost.src = relic.image;
+        ghost.dataset.src = relic.image;
+        ghost.decoding = "async";
         ghost.alt = "";
         detailGhosts.appendChild(ghost);
       });
@@ -3247,7 +3249,7 @@
           orbitButton.dataset.relicIndex = relicIndex;
           orbitButton.dataset.ring = ring;
           orbitButton.setAttribute("aria-label", relic.title);
-          orbitButton.innerHTML = `<img src="${relic.image}" alt="">`;
+          orbitButton.innerHTML = `<img data-src="${relic.image}" decoding="async" alt="">`;
           orbitStage.appendChild(orbitButton);
         }
       }
@@ -3261,7 +3263,7 @@
           card.className = "relic-card";
           card.type = "button";
           card.setAttribute("aria-label", `View ${relic.title}`);
-          card.innerHTML = `<img src="${relic.image}" alt="${relic.title}">`;
+          card.innerHTML = `<img data-src="${relic.image}" decoding="async" alt="${relic.title}">`;
           card.addEventListener("click", () => openDetail(index));
           row.appendChild(card);
         });
@@ -3271,7 +3273,7 @@
       const orbitItems = [...document.querySelectorAll(".orbit-item")];
       const citySites = {
         shanghai: {
-          image: "assets/cities/shanghai-office.jpg",
+          image: "assets/optimized/cities/shanghai-office.webp",
           alt: "Shanghai shared office site",
           meta: "SHANGHAI / 03 SITES",
           title: "Shanghai Jing'an Creative Hub",
@@ -3281,7 +3283,7 @@
           description: "A clean glass-and-color workspace for early-stage teams that need both focused desks and visible creative energy. The open workstation area supports daily production, while the meeting corners keep project reviews close to the team."
         },
         hangzhou: {
-          image: "assets/cities/hangzhou-office.jpg",
+          image: "assets/optimized/cities/hangzhou-office.webp",
           alt: "Hangzhou shared office site",
           meta: "HANGZHOU / 03 SITES",
           title: "Hangzhou Xihu Inspiration Studio",
@@ -3291,7 +3293,7 @@
           description: "An open ecological work environment with large shared tables, plants, and soft movement paths. It is designed for design research, study sessions, and long creative days where people need to stay connected without feeling crowded."
         },
         shenzhen: {
-          image: "assets/cities/shenzhen-office.jpg",
+          image: "assets/optimized/cities/shenzhen-office.webp",
           alt: "Shenzhen shared office site",
           meta: "SHENZHEN / 03 SITES",
           title: "Shenzhen Nanshan Project Station",
@@ -3301,7 +3303,7 @@
           description: "A compact independent booth system for people who need privacy inside a public working network. It supports calls, deep work, and short solo sessions while still keeping members visually connected to the larger community."
         },
         chengdu: {
-          image: "assets/cities/chengdu-office.jpg",
+          image: "assets/optimized/cities/chengdu-office.webp",
           alt: "Chengdu shared office site",
           meta: "CHENGDU / 03 SITES",
           title: "Chengdu Gaoxin Growth Archive",
@@ -3317,8 +3319,8 @@
           title: "2-4 People Layout",
           lead: "For newly launched partner teams or small creative groups. Choose between compact and spacious layouts, protecting daily focus first and adjusting desk distance according to communication frequency.",
           body: "The compact layout supports frequent collaboration, while the spacious layout suits teams that need independent focus and light guest meetings.",
-          compactImage: "assets/layouts/team-2-4-compact.png",
-          spaciousImage: "assets/layouts/team-2-4-spacious.png",
+          compactImage: "assets/optimized/layouts/team-2-4-compact.webp",
+          spaciousImage: "assets/optimized/layouts/team-2-4-spacious.webp",
           captions: ["2-4 people compact office", "2-4 people spacious office"],
           items: [
             ["Compact", "A focused small-room setup with paired desks, wall storage, and close communication distance for founders or two-to-four person project teams."],
@@ -3330,8 +3332,8 @@
           title: "5-9 People Layout",
           lead: "For product, design, operations, or content teams. The room reserves a short-meeting area and material wall so discussion and review can happen without leaving the office.",
           body: "The compact layout emphasizes workstation efficiency, while the spacious layout keeps more room for movement and display.",
-          compactImage: "assets/layouts/team-5-9-compact.png",
-          spaciousImage: "assets/layouts/team-5-9-spacious.png",
+          compactImage: "assets/optimized/layouts/team-5-9-compact.webp",
+          spaciousImage: "assets/optimized/layouts/team-5-9-spacious.webp",
           captions: ["5-9 people compact office", "5-9 people spacious office"],
           items: [
             ["Compact", "A dense workstation room for teams that need many seats, shared storage, and quick everyday communication within a limited footprint."],
@@ -3343,8 +3345,8 @@
           title: "10-20 People Layout",
           lead: "For stable teams or staged expansion. The room can combine open workstations, manager seats, small meeting zones, and visitor discussion areas.",
           body: "The compact layout helps control cost, while the spacious layout suits teams that need more brand display and internal communication space.",
-          compactImage: "assets/layouts/team-10-20-compact.png",
-          spaciousImage: "assets/layouts/team-10-20-spacious.png",
+          compactImage: "assets/optimized/layouts/team-10-20-compact.webp",
+          spaciousImage: "assets/optimized/layouts/team-10-20-spacious.webp",
           captions: ["10-20 people compact office", "10-20 people spacious office"],
           items: [
             ["Compact", "A high-efficiency office with bench desks, shared writing surfaces, and compact meeting support for growing teams controlling cost and area."],
@@ -3356,57 +3358,57 @@
         tools: {
           meta: "CUSTOM EQUIPMENT / EFFICIENCY",
           title: "Productivity Tool Customization",
-          image: "assets/custom/whiteboard.png",
+          image: "assets/optimized/custom/whiteboard.webp",
           summary: "Whiteboards, projectors, and laser pointers for meetings, reviews, and pitches.",
           lead: "A focused tool set for teams that frequently present, explain, review, and turn ideas into visible decisions.",
           body: "Configurations can be matched to room size, wall distance, meeting frequency, and the way each team shares information.",
           captions: ["Whiteboard: movable planning surface", "Projector: visual presentation support", "Laser pointer: precise speaking tool"],
           items: [
-            { title: "Whiteboard", image: "assets/custom/whiteboard.png", text: "A movable writing surface for brainstorming, weekly planning, task breakdowns, and visual reviews. The board can sit beside a meeting table or divide a small discussion zone without permanently changing the room.", tags: ["For: brainstorming and reviews", "Options: movable / wall-mounted", "Best with: 2-9 person rooms"] },
-            { title: "Projector", image: "assets/custom/projector.png", text: "A presentation device for proposal sharing, training sessions, portfolio reviews, and investor-facing pitches. Brightness and projection distance can be matched to the room size and daylight level.", tags: ["For: training and pitching", "Options: portable / fixed setup", "Best with: meeting corners"] },
-            { title: "Laser Pointer", image: "assets/custom/laser-pointer.png", text: "A compact speaking tool for roadshows, design critiques, and client walkthroughs. It helps presenters guide attention precisely without staying fixed beside the computer.", tags: ["For: public speaking", "Options: pointer / slide clicker", "Best with: projector setups"] }
+            { title: "Whiteboard", image: "assets/optimized/custom/whiteboard.webp", text: "A movable writing surface for brainstorming, weekly planning, task breakdowns, and visual reviews. The board can sit beside a meeting table or divide a small discussion zone without permanently changing the room.", tags: ["For: brainstorming and reviews", "Options: movable / wall-mounted", "Best with: 2-9 person rooms"] },
+            { title: "Projector", image: "assets/optimized/custom/projector.webp", text: "A presentation device for proposal sharing, training sessions, portfolio reviews, and investor-facing pitches. Brightness and projection distance can be matched to the room size and daylight level.", tags: ["For: training and pitching", "Options: portable / fixed setup", "Best with: meeting corners"] },
+            { title: "Laser Pointer", image: "assets/optimized/custom/laser-pointer.webp", text: "A compact speaking tool for roadshows, design critiques, and client walkthroughs. It helps presenters guide attention precisely without staying fixed beside the computer.", tags: ["For: public speaking", "Options: pointer / slide clicker", "Best with: projector setups"] }
           ]
         },
         living: {
           meta: "CUSTOM EQUIPMENT / LIVING",
           title: "Lifestyle Equipment",
-          image: "assets/custom/green-plants.png",
+          image: "assets/optimized/custom/green-plants.webp",
           summary: "Green plants, humidifiers, and aromatherapy for comfort and atmosphere.",
           lead: "The office should not only support productivity, but also make long working hours feel breathable, soft, and emotionally sustainable.",
           body: "Lifestyle equipment is recommended according to daylight, room size, scent sensitivity, and whether the team wants a quiet or more expressive atmosphere.",
           captions: ["Green plants: natural visual comfort", "Humidifier: air and body comfort", "Aromatherapy: gentle spatial atmosphere"],
           items: [
-            { title: "Green Plants", image: "assets/custom/green-plants.png", text: "Plant combinations for windows, desks, and corner zones. They soften the visual edge of the office, create a more natural rhythm, and help members feel that the space is lived in rather than only rented.", tags: ["For: long-term residency", "Options: desktop / floor / window", "Best with: daylight zones"] },
-            { title: "Humidifier", image: "assets/custom/humidifier.png", text: "A quiet device for air-conditioned rooms and long indoor working hours. It keeps the space physically comfortable without changing the visual identity of the office.", tags: ["For: dry indoor air", "Options: desk unit / corner unit", "Best with: enclosed rooms"] },
-            { title: "Aromatherapy", image: "assets/custom/aromatherapy.png", text: "A low-intensity scent setting for reception corners, rest areas, or quiet rooms. The goal is not to perfume the whole workplace, but to create small emotional pauses inside the day.", tags: ["For: rest and guest areas", "Options: woody / herbal / clean", "No-scent zones available"] }
+            { title: "Green Plants", image: "assets/optimized/custom/green-plants.webp", text: "Plant combinations for windows, desks, and corner zones. They soften the visual edge of the office, create a more natural rhythm, and help members feel that the space is lived in rather than only rented.", tags: ["For: long-term residency", "Options: desktop / floor / window", "Best with: daylight zones"] },
+            { title: "Humidifier", image: "assets/optimized/custom/humidifier.webp", text: "A quiet device for air-conditioned rooms and long indoor working hours. It keeps the space physically comfortable without changing the visual identity of the office.", tags: ["For: dry indoor air", "Options: desk unit / corner unit", "Best with: enclosed rooms"] },
+            { title: "Aromatherapy", image: "assets/optimized/custom/aromatherapy.webp", text: "A low-intensity scent setting for reception corners, rest areas, or quiet rooms. The goal is not to perfume the whole workplace, but to create small emotional pauses inside the day.", tags: ["For: rest and guest areas", "Options: woody / herbal / clean", "No-scent zones available"] }
           ]
         },
         desks: {
           meta: "CUSTOM FURNITURE / DESKS",
           title: "Custom Desk Systems",
-          image: "assets/custom/open-plan-table.png",
+          image: "assets/optimized/custom/open-plan-table.webp",
           summary: "Open-plan, collaborative, and L-shaped desks for different work rhythms.",
           lead: "Desk systems define collaboration distance, circulation, storage, and how people face one another during everyday work.",
           body: "Members can start from one desk type, then adjust power access, partitions, storage, cable routing, and surface materials.",
           captions: ["Open-plan table: shared workstation system", "Collaborative table: group discussion layout", "L-shaped table: focused corner configuration"],
           items: [
-            { title: "Open-plan Table", image: "assets/custom/open-plan-table.png", text: "A shared workstation layout for teams that need openness and fast visual awareness. It keeps everyone in the same working field while still leaving room for storage and cable management.", tags: ["For: 5-20 people", "Strength: efficient shared seating", "Options: partition / cable tray"] },
-            { title: "Collaborative Table", image: "assets/custom/collaborative-table.png", text: "A multi-directional desk system for project groups, design teams, and people who need to switch between focused work and group discussion throughout the day.", tags: ["For: project teams", "Strength: group communication", "Options: cluster / island setup"] },
-            { title: "L-shaped Table", image: "assets/custom/l-shaped-table.png", text: "A corner-based desk layout for small offices or members who need a more enclosed working boundary. It works well when the team wants a quiet center area and more storage along the sides.", tags: ["For: 2-4 people", "Strength: focused corner rhythm", "Options: side cabinet / privacy panel"] }
+            { title: "Open-plan Table", image: "assets/optimized/custom/open-plan-table.webp", text: "A shared workstation layout for teams that need openness and fast visual awareness. It keeps everyone in the same working field while still leaving room for storage and cable management.", tags: ["For: 5-20 people", "Strength: efficient shared seating", "Options: partition / cable tray"] },
+            { title: "Collaborative Table", image: "assets/optimized/custom/collaborative-table.webp", text: "A multi-directional desk system for project groups, design teams, and people who need to switch between focused work and group discussion throughout the day.", tags: ["For: project teams", "Strength: group communication", "Options: cluster / island setup"] },
+            { title: "L-shaped Table", image: "assets/optimized/custom/l-shaped-table.webp", text: "A corner-based desk layout for small offices or members who need a more enclosed working boundary. It works well when the team wants a quiet center area and more storage along the sides.", tags: ["For: 2-4 people", "Strength: focused corner rhythm", "Options: side cabinet / privacy panel"] }
           ]
         },
         brands: {
           meta: "BRAND PARTNERSHIP / FURNITURE",
           title: "Brand Partnerships",
-          image: "assets/brands/genjiwood.png",
+          image: "assets/optimized/brands/genjiwood.webp",
           summary: "Upgrade beyond free basics with selected furniture brand partners.",
           lead: "If the free basic service does not meet your needs, choose upgraded furniture options through partner brands. We help members access preferential pricing and coordinated purchasing support.",
           body: "Brand partnerships focus on material quality, visual consistency, comfort, and long-term maintenance for members who want their office to feel more intentional.",
           captions: ["Genjiwood: solid wood warmth", "MUJI: calm everyday systems", "IKEA: flexible modular office pieces"],
           items: [
-            { title: "Genjiwood", image: "assets/brands/genjiwood.png", text: "A solid-wood furniture direction for members who want a warmer and more domestic studio atmosphere. It is suited to private offices, reading corners, reception zones, and founder rooms that need a calm natural tone.", tags: ["For: warm wood texture", "Options: desks / cabinets / shelves", "Member discount support"] },
-            { title: "MUJI", image: "assets/brands/muji.jpeg", text: "A clean and restrained system for teams that prefer quiet storage, simple surfaces, and flexible everyday objects. MUJI-style selections help the office stay organized without becoming visually heavy.", tags: ["For: minimal daily order", "Options: storage / tables / accessories", "Style matching support"] },
-            { title: "IKEA", image: "assets/brands/ikea.jpeg", text: "A modular and budget-friendly path for teams that need fast setup, replaceable parts, and practical office combinations. It works especially well for growing teams that may adjust seats or room functions often.", tags: ["For: flexible setup", "Options: modular desks / chairs / lighting", "Package quote available"] }
+            { title: "Genjiwood", image: "assets/optimized/brands/genjiwood.webp", text: "A solid-wood furniture direction for members who want a warmer and more domestic studio atmosphere. It is suited to private offices, reading corners, reception zones, and founder rooms that need a calm natural tone.", tags: ["For: warm wood texture", "Options: desks / cabinets / shelves", "Member discount support"] },
+            { title: "MUJI", image: "assets/optimized/brands/muji.webp", text: "A clean and restrained system for teams that prefer quiet storage, simple surfaces, and flexible everyday objects. MUJI-style selections help the office stay organized without becoming visually heavy.", tags: ["For: minimal daily order", "Options: storage / tables / accessories", "Style matching support"] },
+            { title: "IKEA", image: "assets/optimized/brands/ikea.webp", text: "A modular and budget-friendly path for teams that need fast setup, replaceable parts, and practical office combinations. It works especially well for growing teams that may adjust seats or room functions often.", tags: ["For: flexible setup", "Options: modular desks / chairs / lighting", "Package quote available"] }
           ]
         }
       };
@@ -3426,11 +3428,23 @@
       let startPitch = 0;
       let pointerMoved = false;
 
+      function loadPageImages(container) {
+        container.querySelectorAll("img[data-src]").forEach((image) => {
+          image.src = image.dataset.src;
+          image.removeAttribute("data-src");
+        });
+      }
+
+      let orbitVisible = false;
+      let orbitFrame = 0;
       function showPage(pageName) {
+        orbitVisible = pageName === "orbit" && document.body.classList.contains("app-ready");
+        if (orbitVisible && !orbitFrame) orbitFrame = requestAnimationFrame(projectOrbit);
         pagePanels.forEach((panel) => {
           const isActive = panel.dataset.page === pageName;
           panel.classList.toggle("is-active", isActive);
           panel.setAttribute("aria-hidden", String(!isActive));
+          if (isActive && document.body.classList.contains("app-ready")) loadPageImages(panel);
         });
 
         pageTabs.forEach((tab) => {
@@ -3465,6 +3479,7 @@
       }
 
       function returnToCamera() {
+        orbitVisible = false;
         document.body.classList.add("intro-locked");
         document.body.classList.remove("app-ready");
         intro.classList.remove("is-hidden");
@@ -3574,7 +3589,7 @@
             ${detail.items.map((item) => `
               <article class="custom-feed-item">
                 <div class="custom-feed-image">
-                  <img src="${item.image}" alt="${item.title} image placeholder" />
+                  <img src="${item.image}" loading="lazy" decoding="async" alt="${item.title} image placeholder" />
                 </div>
                 <div>
                   <h4>${item.title}</h4>
@@ -3615,6 +3630,8 @@
       showPage("home");
 
       function projectOrbit(time) {
+        orbitFrame = 0;
+        if (!orbitVisible) return;
         const rect = orbitStage.getBoundingClientRect();
         yaw += (targetYaw - yaw) * 0.08;
         pitch += (targetPitch - pitch) * 0.08;
@@ -3648,7 +3665,7 @@
           item.style.filter = `blur(${blur}px) saturate(${saturation}) brightness(${brightness})`;
         });
 
-        requestAnimationFrame(projectOrbit);
+        orbitFrame = requestAnimationFrame(projectOrbit);
       }
 
       orbitStage.addEventListener("pointerdown", (event) => {
@@ -3709,6 +3726,7 @@
       function openDetail(index) {
         const relic = relics[index];
         activeRelicIndex = index;
+        loadPageImages(detailGhosts);
         detailImage.src = relic.image;
         detailImage.alt = relic.title;
         detailTitle.textContent = relic.title;
@@ -3801,7 +3819,7 @@
         closePanel();
       });
 
-      requestAnimationFrame(projectOrbit);
+      // Orbit rendering starts only when the Space Memories page is opened.
     </script>
   </body>
 </html>
